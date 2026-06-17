@@ -17,6 +17,6 @@ Clone this repository and explore the code.
 python hello.py
 ```
 
-## Licence
+## License
 
 MIT
