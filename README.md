@@ -20,3 +20,10 @@ python hello.py
 ## Licence
 
 MIT
+
+## Canva アニメ復元ツール
+
+`canva-anim/` に、CanvaのPPTXへPowerPointのアニメーションを付け直すWebアプリがあります。
+使い方は [canva-anim/README.md](canva-anim/README.md) を参照してください。
+
+公開URL(GitHub Pages): https://peace1th.github.io/first-pr/
