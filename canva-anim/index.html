@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canva アニメ復元ツール</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Canva アニメ復元ツール</h1>
+  <p class="lead">CanvaからダウンロードしたPPTXに、PowerPointのアニメーションと画面切り替えを付け直します。ファイルはブラウザの中だけで処理され、外部には送信されません。</p>
+</header>
+
+<section id="drop" class="drop" tabindex="0" role="button" aria-label="PPTXファイルを選択">
+  <input id="file" type="file" accept=".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation" hidden>
+  <strong>ここに .pptx をドラッグ&ドロップ</strong>
+  <span>またはクリックしてファイルを選ぶ</span>
+  <details class="howto" onclick="event.stopPropagation()">
+    <summary>使い方</summary>
+    <ol>
+      <li>Canvaで「共有 → ダウンロード → ファイルの種類: PPTX」を選んで保存します。</li>
+      <li>このページに読み込み、アニメーションを付けたい要素を選んで設定します。</li>
+      <li>「PPTXをダウンロード」で保存し、PowerPointで開きます。</li>
+      <li>Googleスライドで使う場合は、できたPPTXをGoogleドライブにアップロードして「Googleスライドで開く」を選びます。基本的なアニメーションは引き継がれますが、一部の効果は変わることがあります。</li>
+    </ol>
+  </details>
+</section>
+<p id="msg" class="msg" role="status" hidden></p>
+
+<main id="app" hidden>
+  <aside class="col slides" aria-label="スライド一覧">
+    <h2>スライド</h2>
+    <ol id="slideList"></ol>
+  </aside>
+
+  <section class="col center">
+    <div class="toolbar">
+      <button id="play" type="button" class="primary">▶ プレビュー再生</button>
+      <button id="stop" type="button">■ 停止</button>
+      <span class="hint">プレビューは目安です。クリック待ちは約0.5秒の間隔に置き換えます。</span>
+    </div>
+    <div id="stageWrap" class="stage-wrap"><div id="stage" class="stage"></div></div>
+    <p class="hint">図形をクリックして選択 → 右側で効果を設定します。</p>
+
+    <div class="card">
+      <h3>このスライドの切り替え効果</h3>
+      <div class="row">
+        <select id="transition"></select>
+        <button id="transitionAll" type="button">全スライドに適用</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>一括設定(読み順に自動で割り当て)</h3>
+      <div class="row wrap">
+        <label>効果 <select id="bulkEffect"></select></label>
+        <label>向き <select id="bulkDir"></select></label>
+        <label>動かし方 <select id="bulkTrigger">
+          <option value="click">すべてクリックで</option>
+          <option value="click-after">最初だけクリック、残りは自動で順番に</option>
+          <option value="click-with">最初だけクリック、残りは同時に</option>
+          <option value="auto">すべて自動で順番に</option>
+        </select></label>
+      </div>
+      <div class="row wrap">
+        <button id="bulkSlide" type="button">このスライドに適用</button>
+        <button id="bulkAll" type="button">全スライドに適用</button>
+        <button id="clearSlide" type="button" class="ghost">このスライドの設定を消す</button>
+      </div>
+      <p class="hint">背景(スライド全体を覆う図形)は対象から外します。上から下、左から右の順です。</p>
+    </div>
+  </section>
+
+  <aside class="col side">
+    <div class="card">
+      <h3>選択中の要素</h3>
+      <div id="panel" class="panel"></div>
+    </div>
+    <div class="card">
+      <h3>再生順(このスライド)</h3>
+      <ol id="orderList" class="order"></ol>
+    </div>
+    <div class="card">
+      <h3>要素一覧</h3>
+      <ul id="elList" class="eltlist"></ul>
+    </div>
+    <button id="download" type="button" class="primary big">PPTXをダウンロード</button>
+    <p id="summary" class="hint"></p>
+  </aside>
+</main>
+
+<footer class="foot">
+  <p>JSZip (MIT) を同梱しています。PowerPointのアニメーションは PresentationML の p:timing として書き込みます。</p>
+</footer>
+
+<script src="vendor/jszip.min.js"></script>
+<script src="pptx-anim.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
